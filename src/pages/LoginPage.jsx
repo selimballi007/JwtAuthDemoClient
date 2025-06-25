@@ -29,7 +29,7 @@ const LoginPage=()=>{
             navigate("/profile");
         } catch(err){
             console.error(err);
-            setError("Email veya şifre hatalı");
+            setError("Email or Password Incorrect");
         }
     };
 
