@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <Navbar/>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />}></Route>
+          <Route path="/register" element={<RegisterPage />}/>
+          <Route path="/forgot-password" element={<ForgotPasswordPage />}/>
           <Route
             path="/profile"
             element={
