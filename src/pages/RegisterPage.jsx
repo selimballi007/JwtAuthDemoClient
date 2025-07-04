@@ -41,7 +41,7 @@ const RegisterPage = () => {
 
         try {
             await api.post("/auth/register", form);
-            alert("Registration successful! You can log in.");
+            alert("Registration successful! Please confirm your account.");
             navigate("/login");
         } catch (err) {
             console.error(err);

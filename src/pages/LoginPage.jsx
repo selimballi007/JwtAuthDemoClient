@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -37,8 +38,16 @@ const LoginPage = () => {
             localStorage.setItem("token", token);
             navigate("/profile");
         } catch (err) {
-            console.error(err);
-            setErrors({ api: "Email or password is incorrect." });
+            setErrors({ api: err.response.data });
+        }
+    };
+
+    const handleResendVerification = async () => {
+        try {
+            await api.post("/auth/resend-verification", form.email); // login input’tan gelen email
+            toast.success("Verification email was sent.");
+        } catch (err) {
+            toast.error(err.response?.data || "Verification failed.");
         }
     };
 
@@ -83,15 +92,42 @@ const LoginPage = () => {
                     >
                         Login
                     </button>
+
+                    {errors.api && (
+                        <p className="text-red-600 text-sm mt-2 text-center">{errors.api}</p>
+                    )}
+
+                    {errors.api === "Please verify your email address first." && (
+                        <div className="flex items-start gap-3 mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded-md">
+                            <svg
+                                className="w-5 h-5 mt-1 text-yellow-500 shrink-0"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M13 16h-1v-4h-1m0-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+                                />
+                            </svg>
+                            <div className="text-sm text-yellow-800">
+                                <p className="font-medium mb-1">You need to verify your email address.</p>
+                                <button
+                                    onClick={handleResendVerification}
+                                    className="text-blue-600 underline hover:text-blue-800 transition"
+                                >
+                                    Resend verification email
+                                </button>
+                            </div>
+                        </div>
+                    )}
                     <p className="text-sm text-center mt-4">
                         <a href="/forgot-password" className="text-blue-600 hover:underline">
                             Forgot your password
                         </a>
                     </p>
-
-                    {errors.api && (
-                        <p className="text-red-600 text-sm mt-2 text-center">{errors.api}</p>
-                    )}
                 </form>
                 <p className="text-sm text-gray-500 mt-6 text-center">
                     Don't have an account?{" "}
