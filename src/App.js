@@ -13,6 +13,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import AdminRoute from "./components/AdminRoute";
 import AdminDashBoard from "./pages/AdminDashboard";
+import Unauthorized from "./pages/Unauthorized";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route
             path="/profile"
             element={

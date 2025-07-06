@@ -40,7 +40,9 @@ const LoginPage = () => {
             login();
             navigate("/profile");            
         } catch (err) {
-            setErrors({ api: err.response });
+            const errorMessage = err.response?.data?.message|| err.response?.data || "Login failed. Please try again.";
+            setErrors({ api: errorMessage });
+            toast.error(errorMessage);
         }
     };
 

@@ -3,6 +3,6 @@
     "debug.console.fontSize": 20,
     "chat.editor.fontSize": 20,
     "editor.minimap.sectionHeaderFontSize": 20,
-    "terminal.integrated.fontSize": 20,
+    "terminal.integrated.fontSize": 14,
     "markdown.preview.fontSize": 20
 }
