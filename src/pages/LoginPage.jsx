@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
+    const {login} = useAuth();
 
     const validate = () => {
         const newErrors = {};
@@ -34,20 +36,20 @@ const LoginPage = () => {
 
         try {
             const response = await api.post("/auth/login", form);
-            const token = response.data.token;
-            localStorage.setItem("token", token);
-            navigate("/profile");
+            localStorage.setItem("token", response.data.token);
+            login();
+            navigate("/profile");            
         } catch (err) {
-            setErrors({ api: err.response.data });
+            setErrors({ api: err.response });
         }
     };
 
     const handleResendVerification = async () => {
         try {
-            await api.post("/auth/resend-verification", form.email); // login input’tan gelen email
+            await api.get(`/auth/resend-verification?email=${encodeURIComponent(form.email)}`); // login input’tan gelen email
             toast.success("Verification email was sent.");
         } catch (err) {
-            toast.error(err.response?.data || "Verification failed.");
+            toast.error(err.response?.data || "Verification email delivery failed.");
         }
     };
 
@@ -115,6 +117,7 @@ const LoginPage = () => {
                             <div className="text-sm text-yellow-800">
                                 <p className="font-medium mb-1">You need to verify your email address.</p>
                                 <button
+                                    type="button"
                                     onClick={handleResendVerification}
                                     className="text-blue-600 underline hover:text-blue-800 transition"
                                 >

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  //const token = localStorage.getItem("token");
+  const { user, logout } = useAuth();
+  const token = user?.token;
+  const role = user?.role;
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/login");
   };
 
@@ -30,6 +34,11 @@ const Navbar = () => {
               <NavLink to="/profile" className={linkClasses}>
                 Profile
               </NavLink>
+              {role === "Admin" && (
+                <NavLink to="/dashboard" className={linkClasses}>
+                  Dashboard
+                </NavLink>
+              )}
               <button onClick={handleLogout} className="hover:underline text-red-200">
                 Logout
               </button>
@@ -75,6 +84,11 @@ const Navbar = () => {
               <NavLink to="/profile" className={linkClasses} onClick={() => setMenuOpen(false)}>
                 Profile
               </NavLink>
+              {role === "Admin" && (
+                <NavLink to="/dashboard" className={linkClasses}>
+                  Dashboard
+                </NavLink>
+              )}
               <button onClick={() => { handleLogout(); setMenuOpen(false); }} className="text-red-200 hover:underline">
                 Logout
               </button>
